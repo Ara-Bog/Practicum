@@ -1,5 +1,6 @@
 import os, shutil, sys
-from config import main_folder
+
+main_folder = r'D:\Unix\Manager'
 
 def pwf():
     global current_directory
