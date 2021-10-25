@@ -1,6 +1,6 @@
-import os, shutil, sys
+import os, sys
 
-main_folder = r'D:\Unix\Manager'
+main_folder = "\\".join(os.path.abspath(__file__).split("\\")[:-1])
 
 def pwf():
     global current_directory
@@ -120,7 +120,7 @@ def rmfl(*names):
 def cpflfd(from_,to_):
     from_ = path_reader(from_)
     to_ = path_reader(to_)
-    if sys.platform == 'win32':
+    if sys.platform == 32:
         os.system(f'copy "{from_[0]}" "{to_[0]}"')
     else:
         os.system(f'cp -r {from_[0]} {to_[0]}')
@@ -181,6 +181,7 @@ def command_prompt():
     }
 
     while True:
+        print(main_folder)
         command = input('CommandPrompt:/'+'/'.join(current_directory[1:])+'$ ').split()
         if command[0] == 'exit':
             break
