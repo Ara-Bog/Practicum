@@ -4,7 +4,7 @@ main_folder = "\\".join(os.path.abspath(__file__).split("\\")[:-1])
 
 def pwf():
     global current_directory
-    print('/'+'/'.join(current_directory[1:]))
+    print('/'.join(current_directory))
 
 
 def path_reader(path, mode = True):
@@ -30,6 +30,7 @@ def mkfld(*names, recursive = False):
         path = path_reader(name)
         try:
             os.makedirs(path[0]) if recursive else os.mkdir(path[0]) 
+            print('Successful')
         except FileExistsError:
             print(f'Directory has already exist: {path[1]}')
         except FileNotFoundError:
@@ -54,6 +55,7 @@ def rmfld(*names, recursive = False):
                 os.rmdir(objects[0])
             else:
                 os.rmdir(path[0])
+            print('Successful')
         except FileNotFoundError:
             print(f'Invlid path {path[1]}')
         except OSError:
@@ -93,6 +95,8 @@ def wrtfl(name):
                     file.write(input()+'\n')
                 except EOFError:
                     break
+        
+        print('Successful')
     except FileExistsError:
         print(f'File doesn\'t exist {path[1]}')
 
@@ -104,15 +108,15 @@ def rdfl(*names):
             with open(path[0], 'r') as file:
                     for line in file.readlines():
                         print(line, end = '')
-        except FileExistsError:
+        except (FileExistsError, FileNotFoundError):
             print(f'File doesn\'t exist {path[1]}')
-
 
 def rmfl(*names):
     for name in names:
         path = path_reader(name)
         try:
             os.remove(path[0])
+            print('Successful')
         except FileNotFoundError:
             print(f'Invlid path {path[1]}')
 
@@ -120,7 +124,7 @@ def rmfl(*names):
 def cpflfd(from_,to_):
     from_ = path_reader(from_)
     to_ = path_reader(to_)
-    if sys.platform == 32:
+    if sys.platform == 'win32':
         os.system(f'copy "{from_[0]}" "{to_[0]}"')
     else:
         os.system(f'cp -r {from_[0]} {to_[0]}')
@@ -157,9 +161,16 @@ def print_help_string():
 'cpflfd [file_from] [file_to]' -- copy file_name to folder/new_file
 'rpls [file_folder] [file_folder]' -- replace file/folder to other file/folder
 'rnm [file_folder]' -- rename file or folder
+'drlst' -- list of files in the current folder 
 'exit' -- to exit
 'help' -- to get command list'''
     print(help_string)
+
+def drlst():
+    global current_directory
+    for file in os.listdir("\\".join(current_directory)):  
+        print(file)
+
 
 def command_prompt():
     global current_directory
@@ -177,11 +188,11 @@ def command_prompt():
         'cpflfd':cpflfd,
         'rpls':rpls,
         'rnm':rnm,
+        'drlst':drlst,
         'help':print_help_string
     }
 
     while True:
-        print(main_folder)
         command = input('CommandPrompt:/'+'/'.join(current_directory[1:])+'$ ').split()
         if command[0] == 'exit':
             break
