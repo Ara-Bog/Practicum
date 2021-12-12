@@ -1,0 +1,6 @@
+{
+    "port": 80,
+    "root": "./",
+    "users": 5,
+    "request_volume": 8192
+}
