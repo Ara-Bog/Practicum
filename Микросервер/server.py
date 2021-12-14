@@ -16,7 +16,7 @@ def hasher(password, salt = None):
 		salt = ''.join(random.sample(letters_and_digits, 16))
 		salt = salt.encode('utf-8')
 	password = sha256((password).encode('utf-8')+salt).hexdigest()
-	return salt,password
+	return salt, password
 
 def save_collection(dict_obj):
 	global DEFAULT_PATH
@@ -28,7 +28,6 @@ def load_collection():
 	if os.path.exists(DEFAULT_PATH):
 		with open(DEFAULT_PATH, "rb") as picklefile:
 			buffered = pickle.load(picklefile)
-		print("load_collection", buffered)
 		return buffered
 	else:
 		return {}	
@@ -46,14 +45,12 @@ def email_validator(email):
 
 def write_userinfo(userinfo):
 	collection = load_collection()
-	print("write_userinfo", collection)
 	password = userinfo["password"]
 	if re.search("^(\w|\d|\_){8,}$", password):
 		return False
 	email = userinfo["email"]
 	date = datetime.now().strftime("%H:%M:%S, %d.%m.%Y")
 	collection[email] = {"password": hasher(password), "date": date}
-	print("write_userinfo", collection)
 	save_collection(collection)
 	return True
 
