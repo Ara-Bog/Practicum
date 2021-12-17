@@ -75,7 +75,6 @@ def process(req):
         user_root, current_directory, req, size = req
         req, *dir_ = req.split()
         path = [path_decoder(user_root, current_directory, item) for item in dir_]
-        print(req, path)
         if not path:
             path = [""]
         if req == 'pwd':
